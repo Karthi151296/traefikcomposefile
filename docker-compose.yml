@@ -1,0 +1,30 @@
+version: '3'
+
+services:
+  traefik:
+    image: mycontainerimage:2.0   
+    ports:
+      - "90:90"
+      - "8080:8080"
+    networks:
+      - mynetwork    
+    volumes:
+      - /opt/containertraefik/traefik.toml:/etc/traefik/traefik.toml
+      - /opt/containertraefik/traefik_dynamic.toml:/etc/traefik/traefik_dynamic.toml
+    links:
+      - httpd
+      - nginx     
+  httpd:
+    image: karthi151296/images:myhttpd  
+    container_name: httpd 
+    networks:
+      - mynetwork    
+  nginx:
+    image: karthi151296/images:mynginx
+    container_name: nginx
+    networks:
+      - mynetwork   
+networks:
+  mynetwork:
+    external: true  
+
